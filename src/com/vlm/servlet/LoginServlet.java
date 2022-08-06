@@ -1,0 +1,123 @@
+package com.vlm.servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.vlm.cdmodal.BorrowDetailmodal;
+import com.vlm.cdmodal.Usermodal;
+import com.vlm.service.BorrowService;
+import com.vlm.service.UserService;
+
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	public LoginServlet() {
+		super();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+
+		String name=request.getParameter("name");
+		String password=request.getParameter("password");
+		
+		boolean status = false;
+		UserService cd=new UserService();
+		
+		Usermodal user=new Usermodal(name,password);
+		ArrayList<BorrowDetailmodal> borrowalbumlist=new ArrayList<BorrowDetailmodal>();
+
+		
+		try {
+			status=cd.validate(name, password);
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		if(status)
+		{
+			request.setAttribute("errorMessage", "Login Failed!<br>Please Register!<br>");
+			RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+			rd.forward(request, response);
+		}
+		else{
+			try {
+
+				status = cd.isLogin(name);
+
+				
+			} catch (ClassNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			
+			if(status)
+			{					
+
+				request.setAttribute("errorMessage", "This user is already login.<br>Try another user.<br>");
+				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+				rd.forward(request, response);
+			}
+			else{
+				
+				try {
+					cd.loginProcess(name);
+					user=cd.UserId(name);
+
+
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.setAttribute("name", name);
+				
+				HttpSession session=request.getSession();
+				int id=user.getId();				
+				session.setAttribute("name",name);
+				session.setAttribute("uid", id);
+				
+				BorrowService bs=new BorrowService();
+				try {
+					borrowalbumlist=bs.borrowAlbumList(id);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				request.setAttribute("borrowlist", borrowalbumlist);
+
+				RequestDispatcher rd = request.getRequestDispatcher("borrow.jsp");
+				rd.forward(request, response);	
+			}
+		}
+			
+
+	}
+
+}

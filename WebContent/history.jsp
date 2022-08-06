@@ -1,0 +1,101 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/categorybootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/animate/categoryanimate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/categoryselect2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/categoryutil.css">
+<link rel="stylesheet" type="text/css" href="css/categorymain.css">
+<!--===============================================================================================-->
+<script>
+	
+	
+</script>
+</head>
+<body>
+<c:if test="${not empty message}">
+		<script type="text/javascript">
+			var msg = '${message}'
+			alert(msg);
+		</script>
+	</c:if>
+	<form method="post" class="login100-form validate-form">
+
+		<div class="limiter">
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table">
+						
+						<button class="login100-form-btn" type="submit"
+							formaction="logout"
+							onclick="return confirm('Are you sure you want to logout?')">Logout</button>
+						<div class="row header">
+							
+							<div class="cell">Album</div>
+							<div class="cell">Borrow Date</div>
+							<div class="cell">Return Date</div>
+							<div class="cell">Qty</div>
+
+
+						</div>
+						<c:forEach var="row" items="${borrowhistory}">
+
+							<div class="row">
+								
+								<div class="cell">${row.cdname }</div>
+								<div class="cell">${row.borrowdate }</div>
+								<div class="cell">${row.returndate }</div>
+								<div class="cell">${row.qty }</div>
+							</div>
+						</c:forEach>
+
+					</div>
+
+					<button class="login100-form-btn" type="submit"
+								formaction="back">Back</button>
+					
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</form>
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/categorybootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/animate/categoryanimate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/categoryselect2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/categoryutil.css">
+<link rel="stylesheet" type="text/css" href="css/categorymain.css">
+<!--===============================================================================================-->
+<script>
+function check(albumid,qty){
+    if(qty<=0)
+      {
+    	alert("Quantity is unavailable!");  
+    	  event.target.checked=false;
+      }
+    else{
+	    	document.getElementById('checkedID[]').value = albumid; 
+	    }
+}
+	function Clickcheck() {
+		if ($('input:checkbox').is(':checked')) {
+			return confirm('Are you sure want to borrow?');
+		} else {
+			alert("You need to check at least 1.");
+			return false;
+		}
+
+	}
+</script>
+</head>
+<body>
+	<c:if test="${not empty message}">
+		<script type="text/javascript">
+			var msg = '${message}'
+			alert(msg);
+		</script>
+	</c:if>
+	<form method="post">
+
+		<div class="limiter">
+			<div class="container-table100">
+				<div class="wrap-table100">
+
+					<div class="table">
+
+						<div class="row header">
+							<div class="cell"></div>
+							<div class="cell">CategoryId</div>
+							<div class="cell">AlbumName</div>
+							<div class="cell">Artist</div>
+							<div class="cell">Price</div>
+							<div class="cell">Qty</div>
+						</div>
+						<c:forEach var="row" items="${album }">
+
+							<div class="row">
+								<div class="cell">
+
+									<input type="checkbox" name="cleckalbum" id="clickalbum"
+										value="${row.albumid}"
+										onclick="check(${row.albumid},${row.qty})">
+
+								</div>
+								<div class="cell">${row.cid }</div>
+								<div class="cell">${row.albumname }</div>
+								<div class="cell">${row.singetname }</div>
+								<div class="cell">${row.price }</div>
+								<div class="cell">${row.qty }</div>
+
+
+							</div>
+						</c:forEach>
+						<div class="row">
+
+							<button type="submit" name="id" value="${row.cid}"
+								formaction="borrow" onclick="return Clickcheck()"
+								class="login100-form-btn">Borrow</button>
+
+							<button class="login100-form-btn" type="submit"
+								formaction="viewCategory">Back</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+	</form>
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/categorybootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+</body>
+</html>

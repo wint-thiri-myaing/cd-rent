@@ -1,0 +1,66 @@
+package com.vlm.servlet;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.vlm.cdmodal.BorrowDetailmodal;
+import com.vlm.service.BorrowService;
+
+@WebServlet("/HistoryServlet")
+public class HistoryServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+   
+    public HistoryServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		BorrowService bs=new BorrowService();
+		ArrayList<BorrowDetailmodal> borrowlist=new ArrayList<BorrowDetailmodal>();
+		
+		HttpSession session = request.getSession(false);
+		int uid = 0;
+		if (session != null) {
+			uid = (int) session.getAttribute("uid");// login ka id ko u chin lo
+		}
+		
+		boolean hashistory=false;
+		try {
+			hashistory=bs.isBorrowHistory(uid);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(hashistory){
+			try {
+				borrowlist=bs.getBorrowHistory(uid);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		request.setAttribute("borrowhistory", borrowlist);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("history.jsp");
+
+		rd.forward(request, response);
+	}
+
+}

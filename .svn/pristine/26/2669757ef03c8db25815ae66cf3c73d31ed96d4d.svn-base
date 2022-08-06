@@ -1,0 +1,131 @@
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/categorybootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/animate/categoryanimate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/categoryselect2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/categoryutil.css">
+<link rel="stylesheet" type="text/css" href="css/categorymain.css">
+<!--===============================================================================================-->
+<script>
+	
+	function returnCheckbox() {
+	if($('input:checkbox').is(':checked')){
+		return confirm('Are you sure want to return CD?');
+    }else{
+        alert("You need to check at least 1.");
+        return false;
+     }        
+
+	}
+</script>
+</head>
+<body>
+
+	<form method="post" class="login100-form validate-form">
+
+		<div class="limiter">
+			<div class="container-table100">
+				<div class="wrap-table100">
+					<div class="table">
+						<span>Username:${name}</span><br> <span>Role:User</span></br>
+						
+						<button type="submit" formaction="history"
+							class="login100-form-btn">History</button>
+						<button class="login100-form-btn" type="submit"
+							formaction="logout"
+							onclick="return confirm('Are you sure you want to logout?')">Logout</button>
+						<div class="row header">
+							<div class="cell"></div>
+							<div class="cell">CD Name</div>
+							<div class="cell">Day</div>
+							<div class="cell">Qty</div>
+							<div class="cell">Price</div>
+
+
+						</div>
+						<c:forEach var="row" items="${borrowlist}">
+
+							<div class="row">
+								<div class="cell">
+									<input type="checkbox" name="cleckreturn" id="clickalbum"
+										value="${row.id}">
+								</div>
+								<div class="cell">${row.cdname }</div>
+								<div class="cell">${row.day }</div>
+								<div class="cell">${row.qty }</div>
+								<div class="cell">${row.netprice }</div>
+							</div>
+						</c:forEach>
+
+					</div>
+
+					<c:forEach var="row" items="${borrowlist}">
+						<c:set var="total" value="${total+row.netprice}" />
+					</c:forEach>
+					<%-- <div class="row">
+						<div class="totalcell" >Total Price</div>
+						<div class="cell">
+							<c:out value="${total}" />
+						</div>
+					</div>  --%>
+					<table>
+					<tr>
+						<td colspan="4" style="margin-right:500px">Total Price</td>
+						<td>
+							<c:out value="${total}" />
+						</td>
+						</tr>
+					 </table>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit"
+							formaction="viewCategory">Borrow</button>
+						<button class="login100-form-btn-right" type="submit"
+							formaction="return" onclick="return returnCheckbox()">Return</button>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</form>
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+</body>
+</html>
